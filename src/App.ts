@@ -4,11 +4,14 @@ export function createApp(): HTMLElement {
 
   page.innerHTML = `
     <section class="hero" aria-labelledby="page-title">
+      <a class="dwr-logo-link" href="https://water.ca.gov/" aria-label="California Department of Water Resources">
+        <img src="/dwr-logo-new.png" alt="Department of Water Resources" />
+      </a>
       <p class="eyebrow">California Department of Water Resources</p>
       <h1 id="page-title">Healthy Rivers and Landscapes</h1>
       <p>
         Learn about the Healthy Rivers and Landscapes Program on
-        the California Natural Resources Agency website.
+        the California Natural Resources Agency website:
       </p>
       <div class="action-links">
         <a
@@ -17,15 +20,18 @@ export function createApp(): HTMLElement {
         >
           Visit the CNRA landing page
         </a>
-        <a class="button-link button-link--secondary" href="/restoration-map/">
-          Explore the restoration map
-        </a>
+        <div class="map-link-group">
+          <p>To see HRL restoration projects, check out the restoration map:</p>
+          <a class="button-link" href="/restoration-map/">
+            Explore the restoration map
+          </a>
+        </div>
       </div>
 
       <section class="contact" aria-labelledby="contact-title">
         <h2 id="contact-title">Contact</h2>
         <p>
-          Email
+          Got questions? Email
           <a href="mailto:HealthyRiversandLandscapes@resources.ca.gov">
             HealthyRiversandLandscapes@resources.ca.gov
           </a>

@@ -1,6 +1,6 @@
 :root {
-  --text-base: 14px;
-  --text-md: 15px;
+  --text-base: 1rem;
+  --text-md: 1rem;
   --text-xl: 22px;
   --weight-semibold: 600;
 
@@ -40,6 +40,8 @@ body {
 
 a {
   color: var(--accent);
+  text-decoration-thickness: 0.1em;
+  text-underline-offset: 0.14em;
 }
 
 a:hover {
@@ -47,8 +49,11 @@ a:hover {
 }
 
 a:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
+  /* The light inner ring keeps focus visible on dark buttons; the outer
+     accent ring keeps it visible on the light page surface. */
+  outline: 3px solid var(--surface-0);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 5px var(--accent);
 }
 
 .site-main {
@@ -59,6 +64,7 @@ a:focus-visible {
 }
 
 .hero {
+  position: relative;
   width: min(100%, 46rem);
   padding: clamp(2rem, 6vw, 4rem);
   background: var(--surface-0);
@@ -66,6 +72,18 @@ a:focus-visible {
   border-top: 3px solid var(--accent);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
+}
+
+.dwr-logo-link {
+  display: block;
+  width: clamp(9rem, 22vw, 14rem);
+  margin: -1rem 0 2.5rem auto;
+}
+
+.dwr-logo-link img {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 .eyebrow {
@@ -92,9 +110,15 @@ h1 + p {
 }
 
 .action-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
+  display: grid;
+  justify-items: start;
+  gap: 1.5rem;
+}
+
+.map-link-group p {
+  margin: 0 0 1.5rem;
+  color: var(--text-secondary);
+  font-size: var(--text-md);
 }
 
 .button-link {
@@ -112,18 +136,6 @@ h1 + p {
   color: var(--surface-0);
   background: var(--accent-hover);
   border-color: var(--accent-hover);
-}
-
-.button-link--secondary {
-  color: var(--accent);
-  background: var(--surface-0);
-  border-color: var(--border-default);
-}
-
-.button-link--secondary:hover {
-  color: var(--accent-hover);
-  background: var(--surface-1);
-  border-color: rgba(2, 48, 54, 0.24);
 }
 
 .contact {
@@ -146,4 +158,16 @@ h1 + p {
 .contact p {
   margin-top: 0.5rem;
   color: var(--text-secondary);
+}
+
+@media (forced-colors: active) {
+  a:focus-visible {
+    outline: 3px solid Highlight;
+    outline-offset: 3px;
+    box-shadow: none;
+  }
+
+  .button-link {
+    border: 1px solid ButtonText;
+  }
 }
