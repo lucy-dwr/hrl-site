@@ -64,10 +64,10 @@ Deployment is handled by `.github/workflows/azure-static-web-apps.yml`. Pushes t
 `main` deploy production; pull requests create a preview environment that is
 removed when the PR closes. The workflow builds with Node.js 24 and pnpm 9.
 
-The workflow needs the `AZURE_STATIC_WEB_APPS_API_TOKEN` GitHub Actions secret
-&mdash; the deployment token for `stapp-hrl-website-prod`. It is the Static Web
-App's own token, separate from the map app's token and from the Terraform
-deployment service principal; store it only as a secret in this repository, never
+The workflow needs the `AZURE_STATIC_WEB_APPS_API_TOKEN` GitHub Actions secret -
+the deployment token for `stapp-hrl-website-prod`. It is the Static Web App's
+own token, separate from the map app's token and from the Terraform deployment
+service principal; store it only as a secret in this repository, never
 in the workflow file. See
 [`hrl-azure-infrastructure` &rarr; `prod/apps/README.md`](https://github.com/Healthy-Rivers-and-Landscapes-Science/hrl-azure-infrastructure/blob/main/infra/environments/prod/apps/README.md)
 ("Deployment Token").
