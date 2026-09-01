@@ -1,12 +1,33 @@
 # Healthy Rivers and Landscapes website
 
-This repository contains the public landing page for [Healthy Rivers and Landscapes](https://hrl.water.ca.gov/). It is a small static site, separate from the [interactive restoration map application](https://github.com/lucy-dwr/hrl-restoration-map/tree/main).
+This repository is the landing page served at the root of
+[`https://hrl.water.ca.gov/`](https://hrl.water.ca.gov/). It is a small static
+site, separate from the
+[interactive restoration map application](https://github.com/Healthy-Rivers-and-Landscapes-Science/hrl-restoration-map).
 
-The page is implemented in `src/App.ts`, with its styles in `src/style.css`. Static assets belong in `public/`. The `/restoration-map/` link is served by the separate restoration-map application and should remain available at that path.
+The page is implemented in `src/App.ts`, with its styles in `src/style.css`.
+Static assets belong in `public/`. The `/restoration-map/` link points at the
+separate restoration-map application and must stay available at that path.
+
+## Where this fits
+
+| Public path | Served by | Repository |
+| --- | --- | --- |
+| `/` | this site | `hrl-site` (here) |
+| `/restoration-map/` | the map app | [`hrl-restoration-map`](https://github.com/Healthy-Rivers-and-Landscapes-Science/hrl-restoration-map) |
+| `/restoration-data/` | the published data snapshot (Azure Blob) | produced by [`hrl-restoration-data-pipeline`](https://github.com/Healthy-Rivers-and-Landscapes-Science/hrl-restoration-data-pipeline) |
+
+The Azure Static Web App (`stapp-hrl-website-prod`, resource group
+`rg-hrl-apps-prod-wus3`), the shared Azure Front Door profile, the `/` route, and
+the `hrl.water.ca.gov` custom domain are all defined in
+[`hrl-azure-infrastructure`](https://github.com/Healthy-Rivers-and-Landscapes-Science/hrl-azure-infrastructure)
+(`infra/environments/prod/apps`). This repository only provides the site content
+and its own deploy workflow.
 
 ## Local development
 
-Use Node.js 24 to match CI, then install dependencies and start the Vite development server:
+Use Node.js 24 to match CI, then install dependencies and start the Vite
+development server:
 
 ```sh
 pnpm install --frozen-lockfile
@@ -25,7 +46,8 @@ pnpm typecheck
 pnpm build
 ```
 
-The build runs the TypeScript check, creates the Vite production bundle, and copies `staticwebapp.config.json` into `dist/`. You can preview the result locally with:
+The build runs the TypeScript check, creates the Vite production bundle, and
+copies `staticwebapp.config.json` into `dist/`. Preview the result locally with:
 
 ```sh
 pnpm preview
@@ -33,8 +55,22 @@ pnpm preview
 
 ## Hosting and deployment
 
-The site is hosted on Azure Static Web Apps behind Azure Front Door. Azure Front Door routes the root path (`/`) to this site and routes `/restoration-map/` to the separate restoration-map application.
+The site is hosted on Azure Static Web Apps behind Azure Front Door. Front Door
+routes `/` to this site and `/restoration-map/` to the map application; local
+development and preview environments are rooted at `/` (`vite.config.ts` sets
+`base: '/'`).
 
-Deployment is handled by `.github/workflows/azure-static-web-apps.yml`. Pushes to `main` deploy the production site; pull requests to `main` create a preview environment, which is removed when the pull request closes. The workflow builds with Node.js 24 and pnpm 9.
+Deployment is handled by `.github/workflows/azure-static-web-apps.yml`. Pushes to
+`main` deploy production; pull requests create a preview environment that is
+removed when the PR closes. The workflow builds with Node.js 24 and pnpm 9.
 
-Store deployment credentials only in GitHub Actions secrets. The workflow expects `AZURE_STATIC_WEB_APPS_API_TOKEN` and does not contain a token.
+The workflow needs the `AZURE_STATIC_WEB_APPS_API_TOKEN` GitHub Actions secret
+&mdash; the deployment token for `stapp-hrl-website-prod`. It is the Static Web
+App's own token, separate from the map app's token and from the Terraform
+deployment service principal; store it only as a secret in this repository, never
+in the workflow file. See
+[`hrl-azure-infrastructure` &rarr; `prod/apps/README.md`](https://github.com/Healthy-Rivers-and-Landscapes-Science/hrl-azure-infrastructure/blob/main/infra/environments/prod/apps/README.md)
+("Deployment Token").
+
+Any change to routing, the custom domain, or the Front Door profile is made in
+`hrl-azure-infrastructure`, not here, and is coordinated with DTS.
